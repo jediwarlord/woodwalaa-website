@@ -48,21 +48,29 @@ function BackgroundGraphics() {
 }
 
 export default function Home() {
-  const [formData, setFormData] = useState({ name: '', email: '', service: '', message: '' });
+  const [formData, setFormData] = useState<{ name: string, email: string, service: string, message: string, attachment: File | null }>({ name: '', email: '', service: '', message: '', attachment: null });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
     try {
+      const data = new FormData();
+      data.append('name', formData.name);
+      data.append('email', formData.email);
+      data.append('service', formData.service);
+      data.append('message', formData.message);
+      if (formData.attachment) {
+        data.append('attachment', formData.attachment);
+      }
+
       const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: data,
       });
       if (!res.ok) throw new Error('Failed to submit');
       setStatus('success');
-      setFormData({ name: '', email: '', service: '', message: '' });
+      setFormData({ name: '', email: '', service: '', message: '', attachment: null });
     } catch (err) {
       console.error(err);
       setStatus('error');
@@ -265,6 +273,10 @@ export default function Home() {
                   <div className="input-group">
                     <label htmlFor="message">Project Details</label>
                     <textarea id="message" className="input-field" rows={5} placeholder="Tell us about your requirements..." required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })}></textarea>
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="attachment">Project Photo (Optional)</label>
+                    <input type="file" id="attachment" className="input-field" accept="image/*" onChange={(e) => setFormData({ ...formData, attachment: e.target.files?.[0] || null })} style={{ padding: '0.8rem', cursor: 'pointer' }} />
                   </div>
 
                   {status === 'success' && (
