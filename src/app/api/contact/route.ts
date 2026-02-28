@@ -7,6 +7,7 @@ import { Resend } from 'resend';
 const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME || '';
 const accountKey = process.env.AZURE_STORAGE_ACCOUNT_KEY || '';
 const resendApiKey = process.env.RESEND_API_KEY || '';
+const notifyEmailTo = process.env.CONTACT_EMAIL_TO || 'omer.malik@outlook.com';
 const tableName = 'ContactSubmissions';
 const containerName = 'contact-attachments';
 
@@ -107,7 +108,7 @@ export async function POST(request: Request) {
             try {
                 await resend.emails.send({
                     from: 'WoodWalaa Notifications <notifications@woodwalaa.com>',
-                    to: ['leonardo.amigo@jeton.com'],
+                    to: [notifyEmailTo],
                     subject: `New Inquiry from ${name} - ${service}`,
                     replyTo: email,
                     html: htmlEmail,
@@ -119,7 +120,7 @@ export async function POST(request: Request) {
             }
         } else {
             console.log('--- MOCK RESEND NOTIFICATION ---');
-            console.log(`To: leonardo.amigo@jeton.com\nSubject: New Inquiry from ${name}\n[Attachment: ${attachmentUrl ? 'Yes' : 'No'}]`);
+            console.log(`To: ${notifyEmailTo}\nSubject: New Inquiry from ${name}\n[Attachment: ${attachmentUrl ? 'Yes' : 'No'}]`);
         }
 
         return NextResponse.json({ success: true, payload });
