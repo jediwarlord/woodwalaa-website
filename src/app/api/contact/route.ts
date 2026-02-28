@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import { TableClient, AzureNamedKeyCredential } from '@azure/data-tables';
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob';
+import { Resend } from 'resend';
 
-// Environment variables needed for Azure Table Storage and Blob Storage
+// Environment variables
 const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME || '';
 const accountKey = process.env.AZURE_STORAGE_ACCOUNT_KEY || '';
+const resendApiKey = process.env.RESEND_API_KEY || '';
 const tableName = 'ContactSubmissions';
 const containerName = 'contact-attachments';
+
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 export async function POST(request: Request) {
     try {
@@ -86,6 +90,36 @@ export async function POST(request: Request) {
             console.log('--- MOCK AZURE TABLE INSERT ---');
             console.log(JSON.stringify(payload, null, 2));
             console.log('-------------------------------');
+        }
+
+        // --- EMAIL NOTIFICATION VIA RESEND ---
+        if (resendApiKey && resend) {
+            const htmlEmail = `
+                <h2>New Contact Inquiry: WoodWalaa</h2>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Service Requested:</strong> ${service}</p>
+                <p><strong>Message:</strong></p>
+                <blockquote style="border-left: 4px solid #FF5E00; padding-left: 10px; margin-left: 0; white-space: pre-wrap;">${message}</blockquote>
+                ${attachmentUrl ? `<p><strong>Attachment:</strong> <a href="${attachmentUrl}">View Reference Image</a></p>` : ''}
+            `;
+
+            try {
+                await resend.emails.send({
+                    from: 'WoodWalaa Notifications <notifications@woodwalaa.com>',
+                    to: ['leonardo.amigo@jeton.com'],
+                    subject: `New Inquiry from ${name} - ${service}`,
+                    replyTo: email,
+                    html: htmlEmail,
+                });
+                console.log('Admin notification email sent successfully.');
+            } catch (emailError) {
+                console.error('Failed to send email notification:', emailError);
+                // We don't fail the whole user submission just because the admin email failed
+            }
+        } else {
+            console.log('--- MOCK RESEND NOTIFICATION ---');
+            console.log(`To: leonardo.amigo@jeton.com\nSubject: New Inquiry from ${name}\n[Attachment: ${attachmentUrl ? 'Yes' : 'No'}]`);
         }
 
         return NextResponse.json({ success: true, payload });
