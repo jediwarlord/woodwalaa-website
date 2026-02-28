@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { Mail, MapPin, Phone, ArrowRight, Zap, PenTool, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { Mail, MapPin, Phone, ArrowRight, Zap, PenTool, ArrowUpRight, Axe } from 'lucide-react';
+import Navbar from './components/Navbar';
 import './globals.css';
+import './marquee.css';
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -18,6 +21,31 @@ const staggerContainer: Variants = {
     transition: { staggerChildren: 0.15 }
   }
 };
+
+function BackgroundGraphics() {
+  const { scrollYProgress } = useScroll();
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 500]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -500]);
+  const rotate1 = useTransform(scrollYProgress, [0, 1], [-20, 100]);
+  const rotate2 = useTransform(scrollYProgress, [0, 1], [45, -45]);
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', zIndex: -1, pointerEvents: 'none' }}>
+      {/* Woodworking Graphic */}
+      <motion.div style={{ position: 'absolute', top: '-10%', left: '-10%', opacity: 0.06, y: y1, rotate: rotate1, color: 'var(--color-accent-primary)' }}>
+        <Axe size={800} />
+      </motion.div>
+      {/* Cricket Graphic */}
+      <motion.div style={{ position: 'absolute', top: '40%', right: '-10%', opacity: 0.06, y: y2, rotate: rotate2, color: 'var(--color-accent-primary)' }}>
+        <svg width="800" height="800" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="8" y="2" width="8" height="14" rx="2" />
+          <path d="M11 16v6a1 1 0 0 0 2 0v-6" />
+          <path d="M10 2h4" />
+        </svg>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [formData, setFormData] = useState({ name: '', email: '', service: '', message: '' });
@@ -43,19 +71,8 @@ export default function Home() {
 
   return (
     <main style={{ paddingBottom: '4rem' }}>
-      {/* Floating Pill Navigation */}
-      <nav className="navbar-pill">
-        <div style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', color: '#fff' }}>
-          WOOD<span style={{ color: 'var(--color-accent-primary)' }}>WALAA</span>
-        </div>
-        <div className="nav-links">
-          <a href="#services" className="nav-link">Services</a>
-          <a href="#contact" className="nav-link">Contact</a>
-        </div>
-        <a href="#contact" className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}>
-          Get Started
-        </a>
-      </nav>
+      <BackgroundGraphics />
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative flex-center" style={{ minHeight: '100vh', paddingTop: '6rem' }}>
@@ -89,6 +106,39 @@ export default function Home() {
         <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translate(-50%, -50%)', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(255,94,0,0.15) 0%, rgba(10,10,10,0) 70%)', zIndex: 0, pointerEvents: 'none' }}></div>
       </section>
 
+      {/* Infinite Image Marquee */}
+      <section className="marquee-container" style={{ marginBottom: '4rem' }}>
+        <div className="marquee-content">
+          {/* Group 1 */}
+          <div className="marquee-item">
+            <Image src="/gallery_wood_1_1772242965625.png" alt="Woodworking Chisel" fill style={{ objectFit: 'cover' }} />
+          </div>
+          <div className="marquee-item">
+            <Image src="/gallery_bat_1_1772242987180.png" alt="Cricket Bat Wrapping" fill style={{ objectFit: 'cover' }} />
+          </div>
+          <div className="marquee-item">
+            <Image src="/gallery_wood_2_1772242976093.png" alt="Sanded Walnut Table" fill style={{ objectFit: 'cover' }} />
+          </div>
+          <div className="marquee-item">
+            <Image src="/gallery_bat_2_1772243000664.png" alt="Restored Cricket Bat" fill style={{ objectFit: 'cover' }} />
+          </div>
+
+          {/* Group 2 (Duplicated exactly for seamless loop) */}
+          <div className="marquee-item">
+            <Image src="/gallery_wood_1_1772242965625.png" alt="Woodworking Chisel" fill style={{ objectFit: 'cover' }} />
+          </div>
+          <div className="marquee-item">
+            <Image src="/gallery_bat_1_1772242987180.png" alt="Cricket Bat Wrapping" fill style={{ objectFit: 'cover' }} />
+          </div>
+          <div className="marquee-item">
+            <Image src="/gallery_wood_2_1772242976093.png" alt="Sanded Walnut Table" fill style={{ objectFit: 'cover' }} />
+          </div>
+          <div className="marquee-item">
+            <Image src="/gallery_bat_2_1772243000664.png" alt="Restored Cricket Bat" fill style={{ objectFit: 'cover' }} />
+          </div>
+        </div>
+      </section>
+
       {/* Bento Grid Services Section */}
       <section id="services" className="section-padding">
         <div className="container">
@@ -105,15 +155,17 @@ export default function Home() {
               className="bento-item"
               style={{ gridColumn: 'span 12', minHeight: '400px' }}
             >
-              <div className="bento-image-wrapper">
-                <Image src="/artisan_piece_1772217440927.png" alt="Artisan Woodworking" fill style={{ objectFit: 'cover', filter: 'brightness(0.6)' }} />
-              </div>
-              <div className="bento-content">
-                <div className="badge" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', borderColor: 'rgba(255,255,255,0.2)' }}>Bespoke</div>
-                <h3>Artisan Woodpieces</h3>
-                <p style={{ maxWidth: '600px' }}>From modern sculptural objects to heirloom-quality furniture, we craft striking pieces that command attention in any modern space.</p>
-                <ArrowUpRight size={28} color="var(--color-accent-primary)" style={{ position: 'absolute', top: '2rem', right: '2rem' }} />
-              </div>
+              <Link href="/services/artisan-woodwork" style={{ display: 'block', width: '100%', height: '100%' }}>
+                <div className="bento-image-wrapper">
+                  <Image src="/artisan_piece_1772217440927.png" alt="Artisan Woodworking" fill style={{ objectFit: 'cover', filter: 'brightness(0.6)' }} />
+                </div>
+                <div className="bento-content">
+                  <div className="badge" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', borderColor: 'rgba(255,255,255,0.2)' }}>Bespoke</div>
+                  <h3>Artisan Woodpieces</h3>
+                  <p style={{ maxWidth: '600px' }}>From modern sculptural objects to heirloom-quality furniture, we craft striking pieces that command attention in any modern space.</p>
+                  <ArrowUpRight size={28} color="var(--color-accent-primary)" style={{ position: 'absolute', top: '2rem', right: '2rem' }} />
+                </div>
+              </Link>
             </motion.div>
 
             {/* Bento Item 2: Cricket Bats */}
@@ -122,15 +174,17 @@ export default function Home() {
               className="bento-item"
               style={{ gridColumn: 'span 7', minHeight: '350px' }}
             >
-              <div className="bento-image-wrapper">
-                <Image src="/cricket_bat_repair_1772217427649.png" alt="Cricket Bat Repair" fill style={{ objectFit: 'cover', filter: 'brightness(0.5)' }} />
-              </div>
-              <div className="bento-content">
-                <div className="badge">Professional</div>
-                <h3>Cricket Bat Services</h3>
-                <p>Precision handle replacement, weight reduction, and crack binding for the perfect balance. We breathe new life into your blade.</p>
-                <ArrowUpRight size={24} color="var(--color-accent-primary)" style={{ position: 'absolute', top: '2rem', right: '2rem' }} />
-              </div>
+              <Link href="/services/cricket-bat-repair" style={{ display: 'block', width: '100%', height: '100%' }}>
+                <div className="bento-image-wrapper">
+                  <Image src="/cricket_bat_repair_1772217427649.png" alt="Cricket Bat Repair" fill style={{ objectFit: 'cover', filter: 'brightness(0.5)' }} />
+                </div>
+                <div className="bento-content">
+                  <div className="badge">Professional</div>
+                  <h3>Cricket Bat Services</h3>
+                  <p>Precision handle replacement, weight reduction, and crack binding for the perfect balance. We breathe new life into your blade.</p>
+                  <ArrowUpRight size={24} color="var(--color-accent-primary)" style={{ position: 'absolute', top: '2rem', right: '2rem' }} />
+                </div>
+              </Link>
             </motion.div>
 
             {/* Bento Item 3: Feature Highlight / Text Card */}

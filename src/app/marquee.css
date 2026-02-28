@@ -1,0 +1,94 @@
+/* Marquee Animations for Portfolio Slider */
+.marquee-container {
+    overflow: hidden;
+    position: relative;
+    width: 100vw;
+    max-width: 100%;
+    padding: 2rem 0;
+    display: flex;
+    background: var(--color-bg-tertiary);
+    /* Subtle contrast against primary background */
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.marquee-content {
+    display: flex;
+    gap: 2rem;
+    padding-left: 2rem;
+    /* Animate infinitely to the left */
+    animation: marquee-scroll 40s linear infinite;
+    will-change: transform;
+}
+
+/* Pause on hover for better UX */
+.marquee-container:hover .marquee-content {
+    animation-play-state: paused;
+}
+
+.marquee-item {
+    position: relative;
+    width: 450px;
+    height: 250px;
+    border-radius: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid var(--color-border);
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.marquee-item:hover {
+    border-color: var(--color-accent-primary);
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.marquee-item img {
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.marquee-item:hover img {
+    transform: scale(1.05);
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        /* Translate exactly half of the total width since we duplicate the content */
+        transform: translateX(calc(-50% - 1rem));
+    }
+}
+
+/* Fading edges effect */
+.marquee-container::before,
+.marquee-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 150px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.marquee-container::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg-primary) 0%, transparent 100%);
+}
+
+.marquee-container::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg-primary) 0%, transparent 100%);
+}
+
+@media (max-width: 768px) {
+    .marquee-item {
+        width: 300px;
+        height: 170px;
+    }
+}
