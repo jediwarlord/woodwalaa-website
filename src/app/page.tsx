@@ -153,7 +153,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.1 }}
+            viewport={{ once: true, margin: '-50px' }}
             variants={staggerContainer}
             className="bento-grid"
           >
@@ -217,7 +217,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.1 }}
+            viewport={{ once: true }}
             variants={staggerContainer}
             style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '4rem', alignItems: 'center' }}
           >
