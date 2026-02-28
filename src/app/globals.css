@@ -322,12 +322,20 @@ a:hover {
   }
 
   .navbar-pill {
-    width: 90%;
-    padding: 0.5rem;
+    width: 95%;
+    padding: 0.5rem 1rem;
+    flex-wrap: wrap;
+    /* allow links to drop down on small screens if needed */
     justify-content: space-between;
+    gap: 0.5rem;
   }
 
   .nav-links {
-    display: none;
+    /* display: none; */
+    width: 100%;
+    justify-content: center;
+    order: 3;
+    /* Push to bottom of flex container */
+    padding-top: 0.5rem;
   }
 }

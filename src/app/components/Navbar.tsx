@@ -7,7 +7,7 @@ import '../dropdown.css';
 export default function Navbar() {
     return (
         <nav className="navbar-pill">
-            <Link href="/" style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', color: '#fff' }}>
+            <Link href="/" style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', color: '#fff', flexShrink: 0 }}>
                 WOOD<span style={{ color: 'var(--color-accent-primary)' }}>WALAA</span>
             </Link>
 
