@@ -39,8 +39,11 @@ export async function POST(request: Request) {
             // Create container if it doesn't exist. Give it blob-level public access so you can view images directly.
             await containerClient.createIfNotExists({ access: 'blob' });
 
-            // Create a unique name for the blob
-            const blobName = `${Date.now()}-${attachment.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+            // Create a unique name for the blob, prefixed with the user's email
+            // Sanitize the email to ensure it's a valid blob name (replacing invalid chars with _)
+            const sanitizedEmail = email.replace(/[^a-zA-Z0-9.\-@]/g, '_');
+            const sanitizedFilename = attachment.name.replace(/[^a-zA-Z0-9.]/g, '_');
+            const blobName = `${sanitizedEmail}-${Date.now()}-${sanitizedFilename}`;
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
             const arrayBuffer = await attachment.arrayBuffer();
