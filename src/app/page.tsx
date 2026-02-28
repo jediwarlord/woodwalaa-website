@@ -221,34 +221,12 @@ export default function Home() {
             variants={staggerContainer}
             style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '4rem', alignItems: 'center' }}
           >
-            <motion.div variants={fadeUp} style={{ gridColumn: 'span 5' }}>
+            <motion.div variants={fadeUp} style={{ gridColumn: 'span 12', textAlign: 'center' }}>
               <h2 className="title-secondary">Start a<br /><span style={{ color: 'var(--color-accent-primary)' }}>Project.</span></h2>
-              <p className="text-lead" style={{ marginBottom: '3rem' }}>Ready to commission a masterpiece or restore your favorite bat? Drop us a line.</p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <MapPin size={20} color="var(--color-text-primary)" />
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>HQ Address</div>
-                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>123 Artisan Lane, Woodshire 90210</div>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Mail size={20} color="var(--color-text-primary)" />
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>Email Support</div>
-                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>hello@woodwalaa.com</div>
-                  </div>
-                </div>
-              </div>
+              <p className="text-lead" style={{ margin: '0 auto 3rem auto' }}>Ready to commission a masterpiece or restore your favorite bat? Drop us a line.</p>
             </motion.div>
 
-            <motion.div variants={fadeUp} style={{ gridColumn: 'span 7' }} className="bento-item">
+            <motion.div variants={fadeUp} style={{ gridColumn: 'span 12', maxWidth: '800px', margin: '0 auto', width: '100%' }} className="bento-item">
               <div style={{ padding: '3rem', background: 'var(--color-bg-secondary)', width: '100%', height: '100%' }}>
                 <form onSubmit={handleSubmit}>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>

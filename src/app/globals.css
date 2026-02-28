@@ -218,6 +218,7 @@ a:hover {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 250px;
   overflow: hidden;
 }
 
@@ -297,6 +298,33 @@ a:hover {
   background-color: rgba(255, 94, 0, 0.03);
 }
 
+/* Custom File Picker Styling */
+input[type="file"].input-field {
+  padding: 0.75rem;
+  /* slightly less padding for the input itself */
+  cursor: pointer;
+}
+
+input[type="file"].input-field::file-selector-button {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-right: 1rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+input[type="file"].input-field::file-selector-button:hover {
+  background-color: var(--color-accent-primary);
+  color: var(--color-bg-primary);
+  border-color: var(--color-accent-primary);
+}
+
 /* Flex layout utilities */
 .flex-center {
   display: flex;
@@ -319,23 +347,5 @@ a:hover {
   .bento-grid {
     display: flex;
     flex-direction: column;
-  }
-
-  .navbar-pill {
-    width: 95%;
-    padding: 0.5rem 1rem;
-    flex-wrap: wrap;
-    /* allow links to drop down on small screens if needed */
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
-
-  .nav-links {
-    /* display: none; */
-    width: 100%;
-    justify-content: center;
-    order: 3;
-    /* Push to bottom of flex container */
-    padding-top: 0.5rem;
   }
 }
